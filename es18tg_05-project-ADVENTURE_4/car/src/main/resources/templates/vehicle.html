@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Vehicles</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" />
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<div class="container">
+		<h2>
+			Vehicles of RentACar <span th:text="${rentacar}">01</span>
+		</h2>
+		<br/>
+		<a class="btn btn-default pull-right" th:href="@{/rentACars}">Return to Rent-a-Cars' list</a>
+		<br/>
+		<br/>
+		<h3>Create Vehicle</h3>
+		<p class="text-danger" th:text="${error}">This is not good</p>
+		<form class="form-inline" th:action="@{/rentACars/{rentacar}/vehicles(rentacar=${rentacar})}" th:object="${vehicle}" method="post">
+			<label>Type: </label> <select class="form-control" th:field="*{type}"><option value="Car">Car</option><option value="Motorcycle">Motorcycle</option></select>
+			<label>Plate: </label> <input class="form-control" type="text" th:field="*{plate}" /> 
+			<label>Kilometers: </label> <input class="form-control" type="number" th:field="*{kilometers}" /> 			
+			<label>Price: </label> <input class="form-control" type="number" th:field="*{price}" /> 
+			<input class="btn btn-primary" type="submit" value="Submit" />
+		</form>
+		<br/>
+		<h3>List of Vehicles</h3>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Type</th>
+					<th>Plate</th>
+ 					<th>Kilometers</th>
+					<th>Price</th>
+					<th>Rentings</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="vehicle : ${vehicles}">
+					<td th:text="${vehicle.type}">Car</td>
+					<td th:text="${vehicle.plate}">12/12/2016</td>
+					<td th:text="${vehicle.kilometers}">21/12/2016</td>
+					<td th:text="${#numbers.formatDecimal(vehicle.price, 1, 2)}">xpto3456</td>
+				 	<td><a
+						th:href="@{/rentACars/{rentacar}/{plate}/rentings(plate=${vehicle.plate},rentacar=${rentacar})}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

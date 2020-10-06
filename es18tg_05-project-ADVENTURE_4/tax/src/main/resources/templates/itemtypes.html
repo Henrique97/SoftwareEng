@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>ItemTypes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" />
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<div class="container">
+		<h2>ItemTypes Manager</h2>
+		<br /> <a class="btn btn-default pull-right" th:href="@{/}">Index</a>
+		<br /> <br />
+		<h3>Create itemtype</h3>
+		<br />
+		<p class="text-danger" th:text="${error}">Some error occurred. Try
+			refreshing the page.</p>
+		<form class="form-inline" th:action="@{/itemtypes}"
+			th:object="${itemtype}" method="post">
+			<table class="table">
+				<tr>
+					<td style="text-align: center"><label>Name</label></td>
+					<td><input class="form-control" type="text" th:field="*{name}" /></td>
+					<td style="text-align: center"><label>Tax</label></td>
+					<td><input class="form-control" type="number" min="0"
+						th:name="tax" th:value="0" /></td>
+				</tr>
+			</table>
+			<input class="btn btn-primary pull-right" type="submit"
+				value="Create itemtype" />
+		</form>
+		<br />
+		<h3>
+			List of itemtypes (<span th:text="${#lists.size(itemtypes)}"></span>
+			found)
+		</h3>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Tax</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="itemtype:${itemtypes}">
+					<td th:text="${itemtype.name}">Problem loading itemtype name</td>
+					<td th:text="${itemtype.tax}">Problem loading itemtype tax</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

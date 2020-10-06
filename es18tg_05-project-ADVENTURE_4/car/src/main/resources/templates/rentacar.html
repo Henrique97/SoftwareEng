@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Rent a Cars</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" />
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<div class="container">
+		<h2>
+			Welcome to Rent-a-Cars' Manager
+		</h2>
+		<br/>
+		<h3>Create Rent-a-Car</h3>
+		<p class="text-danger" th:text="${error}">This is not good</p>
+		<form class="form-inline" th:action="@{/rentACars}" th:object="${rentACar}" method="post">
+			<label>Name: </label> <input class="form-control" type="text" th:field="*{name}" /> 
+			<label>NIF: </label> <input class="form-control" type="text" th:field="*{nif}" /> 
+			<label>IBAN: </label> <input class="form-control" type="text" th:field="*{iban}" /> 
+			<input class="btn btn-primary" type="submit" value="Submit" />
+		</form>
+		<br/>
+		<h3>List of Rent-a-Cars</h3>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>NIF</th>
+					<th>IBAN</th>
+ 					<th>Vehicles</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="rentACar:${rentACars}">
+					<td th:text="${rentACar.name}">EuropCar</td>
+					<td th:text="${rentACar.nif}">123456789</td>
+					<td th:text="${rentACar.iban}">PT50 AAAA BBBB CCCCCCCCCCC KK</td>
+				 	<td><a
+						th:href="@{/rentACars/{name}/vehicles(name=${rentACar.name})}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+
+</body>
+</html>

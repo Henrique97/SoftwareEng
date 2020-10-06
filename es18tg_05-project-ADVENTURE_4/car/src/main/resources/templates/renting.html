@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Rentings</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" />
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<div class="container">
+		<h2>
+			Rentings of vehicle <span th:text="${plate}">01</span>
+		</h2>
+		<a class="btn btn-default pull-right" th:href="@{/rentACars/{rt}/vehicles(rt=${rentacar})}">Vehicles</a>
+		<br/>
+		<h3>Create Renting</h3>
+		<p class="text-danger" th:text="${error}">Error</p>
+		<form class="form-inline" th:action="@{/rentACars/{rt}/{plte}/rentings(plte=${plate},rt=${rentacar})}" th:object="${renting}" method="post">
+			<label>Nif: </label> <input class="form-control" type="text" th:field="*{nif}" />
+			<label>Iban: </label> <input class="form-control" type="text" th:field="*{iban}" />
+			<br/>
+			<br/>
+			<label>Begin: </label> <input class="form-control" type="date" th:field="*{begin}" />
+			<label>End: </label> <input class="form-control" type="date" th:field="*{end}" />
+			<label>Driving License: </label> <input class="form-control" type="text" th:field="*{drivingLicense}" />
+			<input class="btn btn-primary" type="submit" value="Submit" />
+		</form>
+		<br/>
+		<h3>List of Rentings</h3>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Start Date</th>
+ 					<th>End Date</th>
+					<th>Driving License</th>
+					<th>Price</th>
+					<th>ID</th>
+                    <th>Kilometers</th>
+					<th>Checkout</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="renting : ${rentings}">
+					<td th:text="${renting.begin}">12/12/2016</td>
+					<td th:text="${renting.end}">21/12/2016</td>
+					<td th:text="${renting.drivingLicense}">xpto3456</td>
+					<td th:text="${renting.price}">300</td>
+					<td th:text="${renting.reference}">300</td>
+                    <td th:text="${renting.kilometers}">300</td>
+					<td><a th:href="@{/rentACars/{rt}/{plte}/rentings/{ref}/checkout(plte=${plate},rt=${rentacar},ref=${renting.reference})}"><span th:if="${renting.kilometers == -1}">Do Checkout</span><span th:if="${renting.kilometers != -1}">Modify Checkout</span></a></td>
+				<td></td>
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

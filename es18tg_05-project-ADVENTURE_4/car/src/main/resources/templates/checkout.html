@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Do checkout</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet"
+		  th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" />
+	<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+	<script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="container">
+	<h2>
+		Checkout renting id <span th:text="${ref}">01</span>
+	</h2>
+	<a class="btn btn-default pull-right" th:href="@{/rentACars/{rt}/{plte}/rentings(rt=${rentacar},plte=${plate})}">Rentings</a>
+	<br/>
+	<h3>Do checkout</h3>
+	<p class="text-danger" th:text="${error}">Error</p>
+	<form class="form-inline" th:action="@{/rentACars/{rt}/{plte}/rentings/{ref}/checkout(plte=${plate},rt=${rentacar},ref=${ref})}" th:object="${checkout}" method="post">
+		<label>Kilometers: </label> <input class="form-control" type="text" th:field="*{kilometers}" />
+		<input class="btn btn-primary" type="submit" value="Submit" />
+	</form>
+	<br/>
+</div>
+</body>
+</html>

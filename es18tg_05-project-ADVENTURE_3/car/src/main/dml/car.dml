@@ -1,0 +1,98 @@
+package pt.ulisboa.tecnico.softeng.car.domain;
+
+class Vehicle {
+	String plate;
+	int kilometers;
+	double price;
+}
+
+class Car extends Vehicle;
+class Motorcycle extends Vehicle;
+
+class Plate {
+	String id;
+}
+
+class RentACar {
+	int counter;
+	String name;
+	String code;
+	String nif;
+	String iban;
+}
+
+class Renting {
+	String reference;
+	String cancellationReference;
+	String drivingLicense;
+	String clientNIF;
+	String clientIBAN;
+	LocalDate cancellationDate;
+	LocalDate begin;
+	LocalDate end;
+	double price;
+	int kilometers;
+	String paymentReference;
+	String invoiceReference;
+	boolean cancelledInvoice;
+	String cancelledPaymentReference;
+}
+
+relation RentACarHasVehicle {
+	RentACar playsRole rentACar {
+		multiplicity 1..1;
+	}
+	
+	Vehicle playsRole vehicle {
+		multiplicity 0..*;
+	}
+}
+
+relation RentACarHasPlate {
+	RentACar playsRole rentACar {
+		multiplicity 1..1;
+	}
+	
+	Plate playsRole plate {
+		multiplicity 0..*;
+	}
+}
+
+relation DomainRootHasRentACars {
+	.pt.ist.fenixframework.DomainRoot playsRole root {
+		multiplicity 1..1;
+	}
+	RentACar playsRole rentACar {
+		multiplicity 0..*;
+	}
+}
+ 
+relation VehicleHasRentings {
+	Vehicle playsRole vehicle {
+		multiplicity 1..1;
+	}
+	
+	Renting playsRole renting {
+    multiplicity 0..*;
+	} 
+}
+
+class Processor {}
+
+relation ProcessorHasRentings {
+	Processor playsRole processor {
+		multiplicity 0..1;
+	}
+	Renting playsRole renting {
+		multiplicity 0..*;
+	}
+}
+
+relation RentACarHasProcessor {
+	RentACar playsRole rentACar {
+		multiplicity 1..1;
+	}
+	Processor playsRole processor {
+		multiplicity 1..1;
+	}
+}

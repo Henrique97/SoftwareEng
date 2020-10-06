@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Taxpayers</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" />
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<div class="container">
+		<h2>Taxpayers Manager</h2>
+		<br /> <a class="btn btn-default pull-right" th:href="@{/}">Index</a>
+		<br /> <br />
+		<h3>Create taxpayer</h3>
+		<br />
+		<p class="text-danger" th:text="${error}">Some error occurred. Try
+			refreshing the page.</p>
+		<form class="form-inline" th:action="@{/taxpayers}"
+			th:object="${taxpayer}" method="post">
+			<table class="table">
+				<tr>
+					<td style="text-align: center"><label>Name</label></td>
+					<td><input class="form-control" type="text" th:field="*{name}" /></td>
+					<td style="text-align: center"><label>Address</label></td>
+					<td><input class="form-control" type="text"
+						th:field="*{address}" /></td>
+				</tr>
+				<tr>
+					<td style="text-align: center"><label>NIF</label></td>
+					<td><input class="form-control" type="number"
+						th:field="*{nif}" /></td>
+					<td style="text-align: center"><label>Type</label></td>
+					<td><select class="form-control" th:field="*{type}"><option
+								value="Buyer">Buyer</option>
+							<option value="Seller">Seller</option></select></td>
+				</tr>
+			</table>
+			<input class="btn btn-primary pull-right" type="submit"
+				value="Create taxpayer" />
+		</form>
+		<br />
+		<h3>
+			List of taxpayers (<span th:text="${#lists.size(taxpayers)}"></span>
+			found)
+		</h3>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Type</th>
+					<th>NIF</th>
+					<th>Name</th>
+					<th>Address</th>
+					<th>Invoices</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="taxpayer: ${taxpayers}">
+					<td th:text="${taxpayer.type}">Problem loading taxpayer type</td>
+					<td th:text="${taxpayer.nif}">Problem loading taxpayer NIF</td>
+					<td th:text="${taxpayer.name}">Problem loading taxpayer name</td>
+					<td th:text="${taxpayer.address}">Problem loading taxpayer
+						address</td>
+					<td><a
+						th:href="@{/taxpayers/{nif}/invoices(nif=${taxpayer.nif})}">manage</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

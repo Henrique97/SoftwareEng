@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Offers</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" />
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<div class="container">
+		<h2>
+			Offers of Activity <span th:text="${activity.name}">Tracking</span> of <span th:text="${activity.nameProvider}">eXtreme</span>
+		</h2>
+		<a class="btn btn-default pull-right" th:href="@{/providers/{codeProvider}/activities(codeProvider=${activity.codeProvider})}">Activities</a>
+		<br/>
+		<h3>Create Offer</h3>
+		<p class="text-danger" th:text="${error}">Error</p>
+		<form class="form-inline" th:action="@{/providers/{codeProvider}/activities/{codeActivity}/offers(codeProvider=${activity.codeProvider},codeActivity=${activity.code})}" th:object="${offer}" method="post">
+	 		<label>Begin: </label> <input class="form-control" type="date" th:field="*{begin}" /> 
+	 		<label>End: </label> <input class="form-control" type="date" th:field="*{end}" />
+	 		<label>Cost: </label> <input class="form-control" type="number" th:field="*{amount}" /> 
+			<input class="btn btn-primary" type="submit" value="Submit" />
+		</form>
+		<br/>
+		<h3>Clients</h3>
+ 		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Begin</th>
+ 					<th>End</th>
+ 					<th>Capacity</th>
+ 					<th>Reservations</th>
+ 					<th>Cost</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="offer: ${activity.offers}">
+					<td th:text="${offer.begin}">Could not load offer begin</td>
+ 					<td th:text="${offer.end}">Could not load offer end</td>
+ 					<td th:text="${offer.capacity}">Could not load offer capacity</td>
+ 					<td><a th:href="@{/providers/{codeProvider}/activities/{codeActivity}/offers/{codeOffer}/reservations(codeProvider=${activity.codeProvider}, codeActivity=${activity.code}, codeOffer=${offer.code})}">Link</a></td>
+				 	<td th:text="${offer.amount}">Could not load offer amount</td>				
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

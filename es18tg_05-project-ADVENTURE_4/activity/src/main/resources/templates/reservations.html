@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Offers</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" />
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<div class="container">
+		<h2>
+			Reservations of activity <span th:text="${activity.name}">eXtreme</span> for offer with reference: <span th:text="${offer.code}">eXtreme</span>
+		</h2>
+		<a class="btn btn-default pull-right" th:href="@{/providers/{codeProvider}/activities/{codeActivity}/offers(codeProvider=${activity.codeProvider},codeActivity=${activity.code})}">Offers</a>
+		<br/>
+		<h3>Create Reservation</h3>
+		<p class="text-danger" th:text="${error}">Error</p>
+		<form class="form-inline" th:action="@{/providers/{codeProvider}/activities/{codeActivity}/offers/{codeOffer}/reservations(codeProvider=${activity.codeProvider}, codeActivity=${activity.code}, codeOffer=${offer.code})}" th:object="${reservation}" method="post">
+	 		<label>Iban: </label> <input class="form-control" type="text" th:field="*{iban}" /> 
+	 		<label>Nif: </label> <input class="form-control" type="text" th:field="*{nif}" />
+			<input class="btn btn-primary" type="submit" value="Submit" />
+		</form>
+		<br/>
+		<h3>Reservations</h3>
+ 		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Reference</th>
+ 					<th>Iban</th>
+ 					<th>Buyer Nif</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="reservation: ${offer.reservations}">
+					<td th:text="${reservation.reference}">Could not load reservation reference</td>
+ 					<td th:text="${reservation.iban}">Could not load reservation iban</td>
+ 					<td th:text="${reservation.nif}">Could not load reservation nif</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Invoices</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" />
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+
+</head>
+<body>
+	<div class="container">
+		<h2>Invoices Manager</h2>
+		<p>
+			<span class="glyphicon glyphicon-info-sign"></span>&ensp; <span
+				th:text="${taxpayer.type}">Problem loading taxpayer type</span> <span
+				th:text="${taxpayer.name}">Problem loading taxpayer name</span>, NIF
+			<span th:text="${taxpayer.nif}">Problem loading taxpayer NIF</span>
+		</p>
+		<br /> <a class="btn btn-default pull-right" th:href="@{/taxpayers}">Taxpayer
+			Manager</a> <br /> <br />
+		<h3 th:if="${taxpayer.type} == 'Seller'">Create invoice</h3>
+		<br th:if="${taxpayer.type} == 'Seller'" />
+
+		<p class="text-danger" th:text="${error}">Some error occurred. Try
+			refreshing the page.</p>
+		<form th:if="${taxpayer.type} == 'Seller'" class="form-inline"
+			th:action="@{/taxpayers/{nif}/invoices(nif=${nif})}"
+			th:object="${invoice}" method="post">
+			<table class="table">
+				<tr>
+					<!-- if the taxpayer *must* be a seller -->
+					<td th:if="${taxpayer.type} == 'Seller'" style="text-align: center"><label>Seller
+							NIF</label></td>
+					<td th:if="${taxpayer.type} == 'Seller'"><span
+						th:text="${taxpayer.nif}"></span><input class="form-control"
+						type="hidden" th:name="sellerNIF" th:value="${taxpayer.nif}" /></td>
+					<td th:if="${taxpayer.type} == 'Seller'" style="text-align: center"><label>Buyer
+							NIF</label></td>
+					<td th:if="${taxpayer.type} == 'Seller'"><span
+						th:if="${#lists.size(taxpayers)} == 0">No buyers available</span>
+						<select th:if="${#lists.size(taxpayers)} != 0"
+						class="form-control" th:field="*{buyerNIF}">
+							<option th:each="taxpayer: ${taxpayers}"
+								th:text="${taxpayer.nif} + ' (' + ${taxpayer.name} + ')'"
+								th:value="${taxpayer.nif}"></option>
+					</select></td>
+				</tr>
+				<tr>
+					<td style="text-align: center"><label>ItemType</label></td>
+					<td><span th:if="${#lists.size(itemtypes)} == 0">No
+							itemtypes available</span> <select
+						th:if="${#lists.size(itemtypes)} != 0" class="form-control"
+						th:field="*{itemType}">
+							<option th:each="itemtype: ${itemtypes}"
+								th:text="${itemtype.name} + ' (' + ${itemtype.tax} + '%)'"
+								th:value="${itemtype.name}"></option>
+					</select></td>
+					<td style="text-align: center"><label>Value</label></td>
+					<td><input class="form-control" type="number" step="any"
+						min="0" th:name="value" th:value="0" /></td>
+				</tr>
+				<tr>
+					<td style="text-align: center"><label>Date</label></td>
+					<td><input class="form-control" type="date" th:name="date"
+						value="2001-01-01" /></td>
+					<td style="text-align: center" colspan="2"></td>
+				</tr>
+			</table>
+			<input class="btn btn-primary pull-right" type="submit"
+				value="Create invoice" />
+		</form>
+		<br th:if="${taxpayer.type} == 'Seller'" />
+		<h3>
+			List of invoices (<span th:text="${#lists.size(invoices)}"></span>
+			found)
+		</h3>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th th:if="${taxpayer.type} != 'Seller'">Seller NIF</th>
+					<th th:if="${taxpayer.type} != 'Buyer'">Buyer NIF</th>
+					<th>ItemType</th>
+					<th>Value</th>
+					<th>Date</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="invoice: ${invoices}">
+					<td th:if="${taxpayer.type} != 'Seller'"
+						th:text="${invoice.sellerNIF}">Problem loading taxpayer type</td>
+					<td th:if="${taxpayer.type} != 'Buyer'"
+						th:text="${invoice.buyerNIF}">Problem loading taxpayer type</td>
+					<td th:text="${invoice.itemType}">Problem loading invoice
+						itemtype name</td>
+					<td th:text="${#numbers.formatDecimal(invoice.value, 1, 2)}">Problem
+						loading invoice value</td>
+					<td th:text="${invoice.date}">Problem loading invoice date</td>
+					<td
+						th:text="${invoice.isCancelled} == true ? 'cancelled' : 'not cancelled'">Problem
+						loading invoice status</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

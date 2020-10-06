@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Adventures</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" />
+
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<div class="container">
+		<h2>
+			Client <b><font color="#4B7EA5"><span th:text="${client.nif}">NIF</span></font></b> Adventures
+		</h2>
+		<a class="btn btn-default pull-right"
+		   th:href="@{/brokers/{code}/clients(code=${client.brokerCode})}">Clients</a>
+		<br/>
+		<h3><font color="#4B7EA5">Create Adventure</font></h3>
+		<p class="text-danger" th:text="${error}">Error</p>
+		<form class="form-inline" th:action="@{/brokers/{code}/clients/{nif}/adventures(code=${client.brokerCode},nif=${client.nif})}" th:object="${adventure}" method="post">
+	 		<label>Begin: </label> <input class="form-control" type="date" th:field="*{begin}" />
+			<label>End: </label> <input class="form-control" type="date" th:field="*{end}" />
+			<label>Margin: </label> <input class="form-control" type="number" step="0.01" min="0.01" th:field="*{margin}" />
+			<label>Rent Vehicle: </label> <input class="form-control" type="checkbox" name="rentVehicle" value="true" th:field="*{rentVehicle}" />
+			<input class="btn btn-primary" type="submit" value="Submit" />
+		</form>
+		<br/>
+		<h3><font color="#4B7EA5">Adventures</font></h3>
+ 		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Id</th>
+ 					<th>Begin</th>
+					<th>End</th>
+					<th>Amount</th>
+					<th>Margin</th>
+                    <th>Rent Vehicle</th>
+					<th>State</th>
+					<th>Payment Confirmation</th>
+					<th>Payment Cancellation</th>
+					<th>Room Confirmation</th>
+					<th>Room Cancellation</th>
+					<th>Activity Confirmation</th>
+					<th>Activity Cancellation</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="adventure: ${client.adventures}">
+					<td th:text="${adventure.id}">id</td>
+ 					<td th:text="${adventure.begin}">begin</td>
+					<td th:text="${adventure.end}">end</td>
+					<td th:text="${adventure.amount}">amount</td>
+					<td th:text="${adventure.margin}">margin</td>
+                    <td th:text="${adventure.rentVehicle}">Rent Vehicle</td>
+					<td th:text="${adventure.state}">state</td>
+					<td th:text="${adventure.paymentConfirmation}">Payment Confirmation</td>
+					<td th:text="${adventure.paymentCancellation}">Payment Cancellation</td>
+					<td th:text="${adventure.roomConfirmation}">Room Confirmation</td>
+					<td th:text="${adventure.roomCancellation}">Room Cancellation</td>
+					<td th:text="${adventure.activityConfirmation}">Activity Confirmation</td>
+					<td th:text="${adventure.activityCancellation}">Activity Cancellation</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
